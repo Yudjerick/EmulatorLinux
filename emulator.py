@@ -14,16 +14,51 @@ class Node:
         parent.children.append(self)
 
 class Emulator:
-    wd = ""
 
     def __init__(self, path):
-        self.wd = ''
+        #self.wd = ' '
         self.img = path
 
 
     def execute(self, zipfile):
-       sys_files = zipfile.namelist()
-       print(sys_files)
+        namelist = zipfile.namelist()
+        wd = namelist[0].split('/')[0] + '/'
+        print(namelist)
+
+        while(True):
+            if('/' not in wd[:-1]):
+                invite = '~'
+            else:
+                invite = wd.split('/')[len(wd.split('/'))-2]
+            comand = input('root@localhost:'+ invite +' $ ')
+            words = comand.split()
+            if(len(words) == 0):
+                break
+                #continue
+            elif words[0] == 'pwd':
+                print('/' + wd[:-1])
+            elif words[0] == 'cd' and len(words) == 2:
+                if words[1] == '.':
+                    continue
+                elif words[1] == '..':
+                    wd_splt = wd.split('/')
+                    wd_splt.pop()
+                    wd_splt.pop()
+                    wd = '/'.join(wd_splt) + '/'
+                if words[1][0] == '/':
+                    nwd = words[1][1:] + '/'
+                    if nwd in namelist:
+                        wd = nwd
+                else:
+                    nwd = wd + words[1] + '/'
+                    if nwd in namelist:
+                        wd = nwd
+            
+
+
+            
+
+
 
     def build_hierarchy_tree():
         print()
