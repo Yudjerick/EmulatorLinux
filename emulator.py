@@ -37,6 +37,20 @@ class Emulator:
                 #continue
             elif words[0] == 'pwd':
                 print('/' + wd[:-1])
+            elif words[0] == 'ls':
+                items = []
+                for i in namelist:
+                    if wd in i:
+                        item = i[len(wd):].split('/')[0]
+                        if(item not in items and item):
+                            items.append(item)
+                print(' '.join(items))
+            elif words[0] == 'cat' and len(words) == 2:
+                path = wd + words[1]
+                if(path in namelist):
+                    with zipfile.open(path) as myfile:
+                        content = myfile.read()
+                        print(content.decode('utf-8'))
             elif words[0] == 'cd' and len(words) == 2:
                 if words[1] == '.':
                     continue
@@ -53,15 +67,6 @@ class Emulator:
                     nwd = wd + words[1] + '/'
                     if nwd in namelist:
                         wd = nwd
-            
-
-
-            
-
-
-
-    def build_hierarchy_tree():
-        print()
 
     def run_emulation(self):
         try:
