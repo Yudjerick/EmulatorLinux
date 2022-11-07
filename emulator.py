@@ -4,6 +4,7 @@ import zipfile
 def execute(zipfile):
     namelist = zipfile.namelist()
     wd = namelist[0].split('/')[0] + '/'
+    root_lvl = wd
     print(namelist)
 
     while(True):
@@ -36,6 +37,8 @@ def execute(zipfile):
             if words[1] == '.':
                 continue
             elif words[1] == '..':
+                if wd == root_lvl:
+                    continue
                 wd_splt = wd.split('/')
                 wd_splt.pop()
                 wd_splt.pop()
